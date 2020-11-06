@@ -1,0 +1,161 @@
+
+h1 {
+	color: #540025;
+	text-align: center;
+	font-family: 'Corben', Georgia, Times, serif;
+	font-size: 125%;
+}
+
+
+.perData {
+	margin-bottom: 5px;
+}
+
+.standardInput {
+	margin-bottom: 5px;
+}
+
+.standardLegend {
+	font-family: 'Corben', Georgia, Times, serif;
+	color: #65002d;
+}
+
+.standardLabel {
+	font-family: 'Nobile', Helvetica, Arial, sans-serif;
+}
+
+@media (min-device-width: 720px) {
+	.row {
+		display: flex;
+	}
+
+	.column {
+		flex: 50%;
+		padding-left: 25px;
+		padding-right: 25px;
+	}
+}
+
+
+.pinkButton {
+	font: 16px "Helvetica Neue", Helvetica, Arial, clean, sans-serif !important;
+	text-shadow: 0 -1px 1px rgba(0,0,0,0.25), -2px 0 1px rgba(0,0,0,0.25);
+	border-radius: 5px;
+	display: inline-block;
+	color: white;
+	padding: 5px 25px 5px;
+	white-space: nowrap;
+	text-decoration: none;
+	cursor: pointer;
+	background-color: #A9014B;
+	border-style: none;
+	text-align: center;
+	overflow: visible;
+}
+ 
+.pinkButton:hover,
+.pinkButton:focus {
+	background-color: #87003c;
+}
+
+.submitButton {
+	font: bold 16px "Helvetica Neue", Helvetica, Arial, clean, sans-serif !important;
+}
+
+.centeredButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.locationConfirmation {
+  visibility: hidden;
+  font-size: 1.3em;
+  line-height: 0.8;
+  color: #760034;
+  transition: all .2s;
+  font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', Arial;
+}
+
+.mapInput {
+  visibility: hidden;
+}
+
+[type="checkbox"]:not(:checked),
+[type="checkbox"]:checked {
+  position: absolute;
+}
+[type="checkbox"]:not(:checked) + label,
+[type="checkbox"]:checked + label {
+  position: absolute;
+  padding-left: 2.2em;
+  cursor: pointer;
+}
+
+[type="checkbox"]:not(:checked) + label:before,
+[type="checkbox"]:checked + label:before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0;
+  width: 1.1em; height: 1.1em;
+  border: 2px solid #ccc;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,.1);
+}
+[type="checkbox"]:not(:checked) + label:after,
+[type="checkbox"]:checked + label:after {
+  content: '\2713\0020';
+  position: absolute;
+  top: .15em; left: .22em;
+  font-size: 1.3em;
+  line-height: 0.8;
+  color: #760034;
+  transition: all .2s;
+  font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', Arial;
+}
+[type="checkbox"]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+[type="checkbox"]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+[type="checkbox"]:disabled:not(:checked) + label:before,
+[type="checkbox"]:disabled:checked + label:before {
+  box-shadow: none;
+  border-color: #bbb;
+  background-color: #ddd;
+}
+[type="checkbox"]:disabled:checked + label:after {
+  color: #999;
+}
+[type="checkbox"]:disabled + label {
+  color: #aaa;
+}
+[type="checkbox"]:checked:focus + label:before,
+[type="checkbox"]:not(:checked):focus + label:before {
+  border: 2px dotted blue;
+}
+label:hover:before {
+  border: 2px solid #4778d9 !important;
+}
+
+.mapHideButtonWrapper {
+  display: none;
+  position: absolute;
+  top: calc(50% + 210px);
+  left: calc(50% - 200px);
+  width: 400px;
+}
+
+.map {
+  display: none;
+  position: absolute;
+  top: calc(50% - 200px);
+  left: calc(50% - 200px);
+  height: 400px;
+  width: 400px;
+  border: 2px solid black;
+}

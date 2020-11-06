@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Zamówienia</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/index.css" />
+    <meta name="author" content="Konrad Komisarczyk, Mariusz Słapek">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="">
+    </script>
+
+</head>
+<body>
+<div id="list">
+    <div id="add-order"><a href="/form" target="_blank">Dodaj zamowienie.</a></div>
+    <br/><br/>
+    {% for key in orders %}
+        <div class="order">
+            <span class="order-id">
+                {{ key }}
+            </span>
+            <span class="order-info">
+                <a href="/{{ key }}" target="_blank">Informacje o zamówieniu</a>
+            </span>
+            <span class="order-delete">
+                <a href="" onclick="sendDelete({{ key }});">Usuń to zamówienie</a>
+            </span>
+            <span class="order-edit">
+                <a href="/form?id={{ key }}">Edytuj to zamówienie</a>
+            </span>
+        </div>
+    {% endfor %}
+</div>
+<div id="map" class="map">
+</div>
+<script>
+    function sendDelete(key) {
+        window.alert(key);
+        var req = new XMLHttpRequest();
+        req.open("DELETE", "/" + key, false);
+        req.send();
+    }
+</script>
+<script>
+    mymap = L.map("map").setView([52.230, 21.01], 12);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibXNsYXBlayIsImEiOiJja2dsb3VqOTEwNTIwMnRqb3lrZDB3Y3FzIn0.Py4FiVVIH1OpX-PteW0UBg', {
+				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'pk.eyJ1IjoibXNsYXBlayIsImEiOiJja2dsb3VqOTEwNTIwMnRqb3lrZDB3Y3FzIn0.Py4FiVVIH1OpX-PteW0UBg'
+			}).addTo(mymap);
+
+    {% for key in orders %}
+        var strs1 = "{{ orders[key]["pickup-map"] }}".split(",");
+        var x1 = (strs1[0].split("("))[1];
+        var y1 = (((strs1[1].split(")"))[0]).split(" "))[1];
+
+        var strs2 = "{{ orders[key]["delivery-map"] }}".split(",");
+        var x2 = (strs2[0].split("("))[1];
+        var y2 = (((strs2[1].split(")"))[0]).split(" "))[1];
+
+        var marker1 = L.marker([parseFloat(x1), parseFloat(y1)]);
+        marker1.on('click', function () {window.open("/{{ key }}", "_blank");});
+        marker1.addTo(mymap);
+
+        var marker2 = L.marker([parseFloat(x2), parseFloat(y2)]);
+        marker2.on('click', function () {window.open("/{{ key }}", "_blank");});
+        marker2.addTo(mymap);
+
+        var latlngs = Array();
+        latlngs.push(marker1.getLatLng());
+        latlngs.push(marker2.getLatLng());
+        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+    {% endfor %}
+
+</script>
+<br/>
+</body>
+</html>
