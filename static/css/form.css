@@ -78,7 +78,7 @@ h1 {
 }
 
 .mapInput {
-  visibility: hidden;
+  /*visibility: hidden;*/
 }
 
 [type="checkbox"]:not(:checked),
@@ -112,7 +112,7 @@ h1 {
   line-height: 0.8;
   color: #760034;
   transition: all .2s;
-  font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', Arial;
+    font-family: 'Lucida Sans Unicode', 'Arial Unicode MS', Arial, serif;
 }
 [type="checkbox"]:not(:checked) + label:after {
   opacity: 0;
