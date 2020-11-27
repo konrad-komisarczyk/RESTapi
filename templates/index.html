@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Zamówienia</title>
+    <title>Package delivery company</title>
     <link rel="stylesheet" type="text/css" href="../static/css/index.css" />
     <meta name="author" content="Konrad Komisarczyk, Mariusz Słapek">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -13,30 +13,105 @@
             integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
             crossorigin="">
     </script>
-
 </head>
 <body>
-<div id="list">
-    <div id="add-order"><a href="/form" target="_blank">Dodaj zamowienie.</a></div>
-    <br/><br/>
+<div class="row">
+<div id="list" class="column">
+    <button onclick="departure();">Emulate a day of work</button>
+    <br>
+    <br>
+    <br>
+
+    <table style="text-align: center; border: 1px solid black;">
+    <tr>
+        <th>
+            Packages
+        </th>
+    </tr>
+        <tr class="order">
+            <th class="order-id">
+                ID
+            </th>
+            <th class="order-info">
+               Order information
+            </th>
+            <th class="order-delete">
+               Delete order
+            </th>
+            <th class="order-edit">
+               Edit
+            </th>
+            <th class="order-edit">
+                Status
+            </th>
+        </tr>
     {% for key in orders %}
-        <div class="order">
-            <span class="order-id">
+        <tr class="order">
+            <td class="order-id">
                 {{ key }}
-            </span>
-            <span class="order-info">
-                <a href="/{{ key }}" target="_blank">Informacje o zamówieniu</a>
-            </span>
-            <span class="order-delete">
-                <a href="" onclick="sendDelete({{ key }});">Usuń to zamówienie</a>
-            </span>
-            <span class="order-edit">
-                <a href="/form?id={{ key }}">Edytuj to zamówienie</a>
-            </span>
-        </div>
+            </td>
+            <td class="order-info">
+                <a href="/{{ key }}" target="_blank">&#9432;</a>
+            </td>
+            <td class="order-delete">
+                <a href="" onclick="sendDelete({{ key }});">X</a>
+            </td>
+            <td class="order-edit">
+                <a href="/form?id={{ key }}">Edit</a>
+            </td>
+            <td class="order-edit">
+                {{ orders[key]["status"] }}
+            </td>
+        </tr>
     {% endfor %}
+    </table>
+    <div id="add-order"><a href="/form" target="_blank">Add package</a></div>
+    <br/><br/>
+    <br/><br/>
+
+    <table style="text-align: center; border: 1px solid black;">
+    <tr>
+        <th>
+            Vehicles
+        </th>
+    </tr>
+        <tr class="vehicle">
+            <th class="vehicle-id">
+                ID
+            </th>
+            <th class="vehicle-info">
+                See route
+            </th>
+            <th>
+                Capacity (used today / max)
+            </th>
+            <th>
+                Route length (driven today / max daily)
+            </th>
+        </tr>
+    {% for key in vehicles %}
+        <tr class="vehicle">
+            <td class="vehicle-id">
+                {{ key }}
+            </td>
+            <td class="vehicle-info">
+                <a href="/vehicle_route_preview/{{ key }}" target="_blank">&#9432;</a>
+            </td>
+            <td>
+                {{ vehicles[key]["weight"] }} / {{ vehicles[key]["capacity"] }}
+            </td>
+            <td>
+                {{ vehicles[key]["route-length"] }} / 200 km
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+    <div id="add-order"><a href="/form_vehicles" target="_blank">Add vehicle</a></div><br>
 </div>
+<div class="column">
 <div id="map" class="map">
+</div>
+</div>
 </div>
 <script>
     function sendDelete(key) {
@@ -44,6 +119,14 @@
         var req = new XMLHttpRequest();
         req.open("DELETE", "/" + key, false);
         req.send();
+    }
+
+    function departure() {
+        window.alert("The day begins!");
+        var req = new XMLHttpRequest();
+        req.open("GET", "/departure/", false);
+        req.send();
+        location.reload();
     }
 </script>
 <script>
@@ -78,7 +161,13 @@
         var latlngs = Array();
         latlngs.push(marker1.getLatLng());
         latlngs.push(marker2.getLatLng());
-        var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+
+        var color = "red";
+        if ("{{ orders[key]["status"] }}" == "delivered") {
+            color = "blue";
+        }
+
+        var polyline = L.polyline(latlngs, {color: color}).addTo(mymap);
     {% endfor %}
 
 </script>

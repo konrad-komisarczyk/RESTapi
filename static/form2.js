@@ -35,23 +35,6 @@ function initMap(mymap, mapId, marker, locationFieldId, confirmationFieldId) {
 	}
 
 	mymap.on('click', onMapClick);
-
-	document.getElementById(locationFieldId).addEventListener('change', function () {
-        var strs1 = document.getElementById(locationFieldId).value.split(",");
-        var x1 = parseFloat((strs1[0].split("("))[1]);
-        var y1 = parseFloat((((strs1[1].split(")"))[0]).split(" "))[1]);
-		if (marker) {
-			marker.setLatLng([x1, y1]);
-		} else {
-			marker = L.marker([x1, y1]);
-			marker.addTo(mymap);
-		}
-		mymap.flyTo(new L.LatLng(x1, y1), 12);
-		//var latLon = L.latLng(x1, y1);
-		//var bounds = latLon.toBounds(500); // 500 = metres
-		//mymap.panTo(latLon).fitBounds(bounds);
-	});
-
 }
 
 function showPickupMap() {
@@ -98,13 +81,22 @@ function geocode(address, city, postal, locationFieldId, confirmationFieldId, ma
 
     		var latlng = results.results[0].latlng;
     		console.log(latlng);
-    		var latlng2 = [latlng.lat, latlng.lng];
-    		console.log(latlng2);
 			var locationField = document.getElementById(locationFieldId);
 			var confirmationField = document.getElementById(confirmationFieldId);
     		locationField.value = latlng;
 			confirmationField.style.visibility = "visible";
-			locationField.dispatchEvent(new Event("change"));
+
+			//Error here \/ says that marker and mymap are undefined, seems impossible to make it work
+			if (marker) {
+				marker.setLatLng(latlng);
+			} else {
+				console.log("dupa");
+				marker = L.marker(latlng);
+				console.log("dupa2");
+				marker.addTo(map);
+				console.log("dupa3");
+			}
+
 		});
 	}
 }
@@ -119,11 +111,6 @@ function geocodeDelivery() {
 }
 
 
-function reverseGeocode(locationFieldId) {
-	var latlon = document.getElementById(locationFieldId).value;
-
-}
-
 
 
 window.addEventListener("load", function(){
@@ -131,6 +118,10 @@ window.addEventListener("load", function(){
 		"deliveryMapConfirmed");
 	initMap(pickupMap, "mapPickup", pickupMarker, "pickupLocation",
 		"pickupMapConfirmed");
+
+
+	// document.getElementById("delZip").addEventListener("input",
+	// 	geocodeDelivery());
 });
 
 

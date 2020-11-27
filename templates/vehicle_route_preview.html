@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vehicle Route Preview</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/vehicle_route_preview.css" />
+    <meta name="author" content="Konrad Komisarczyk, Mariusz Słapek">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+          integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+            integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+            crossorigin="">
+    </script>
+</head>
+<body>
+<div class="row">
+    <div class="column">
+    <table>
+        <tr>
+            <th>
+                Lat:
+            </th>
+            <th>
+                Lon:
+            </th>
+        </tr>
+    {% for point in vehicle["route"] %}
+        <tr>
+            <th>
+                {{ point["lat"] }}
+            </th>
+            <th>
+                {{ point["lon"] }}
+            </th>
+        </tr>
+    {% endfor %}
+    </table>
+    </div>
+    <div class="column">
+        <div id="map" class="map"></div>
+    </div>
+</div>
+</body>
+
+<script>
+    mymap = L.map("map").setView([52.230, 21.01], 12);
+
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibXNsYXBlayIsImEiOiJja2dsb3VqOTEwNTIwMnRqb3lrZDB3Y3FzIn0.Py4FiVVIH1OpX-PteW0UBg', {
+				attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+				maxZoom: 18,
+				id: 'mapbox/streets-v11',
+				tileSize: 512,
+				zoomOffset: -1,
+				accessToken: 'pk.eyJ1IjoibXNsYXBlayIsImEiOiJja2dsb3VqOTEwNTIwMnRqb3lrZDB3Y3FzIn0.Py4FiVVIH1OpX-PteW0UBg'
+			}).addTo(mymap);
+
+    var latlngs = Array();
+    {% for point in vehicle["route"] %}
+        lat = parseFloat({{ point["lat"] }});
+        lng = parseFloat({{ point["lon"] }});
+        var marker1 = L.marker([lat, lng]);
+        marker1.addTo(mymap);
+        latlngs.push(marker1.getLatLng());
+    {% endfor %}
+    var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+
+</script>
+</html>

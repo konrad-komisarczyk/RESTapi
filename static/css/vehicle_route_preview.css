@@ -11,9 +11,9 @@
 }
 
 .map {
-  /*display: block;*/
+  display: block;
   height: 640px;
-  width: 720px;
+  width: 1000px;
   border: 2px solid black;
   margin-top: 20px;
 }
