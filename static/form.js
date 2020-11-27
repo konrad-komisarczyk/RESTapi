@@ -95,9 +95,6 @@ function geocode(address, city, postal, locationFieldId, confirmationFieldId, ma
     		}
 
     		var latlng = results.results[0].latlng;
-    		console.log(latlng);
-    		var latlng2 = [latlng.lat, latlng.lng];
-    		console.log(latlng2);
 			var locationField = document.getElementById(locationFieldId);
 			var confirmationField = document.getElementById(confirmationFieldId);
     		locationField.value = latlng;
@@ -136,9 +133,9 @@ function reverseGeocode(addressField, cityField, postalField, locationFieldId) {
 
 	geocodeService.reverse().latlng([x1, y1]).run(function (error, result) {
       	if (error) {
+      		window.alert("There was problem with finding given location. Enter different address or pick it on map.");
         	return;
       	}
-      	console.log(result);
       	document.getElementById(addressField).value = result.address.Address;
       	document.getElementById(cityField).value = result.address.City;
       	document.getElementById(postalField).value = result.address.Postal;
