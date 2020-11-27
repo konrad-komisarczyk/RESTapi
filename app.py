@@ -124,8 +124,8 @@ def parseLatLonString(latlon):
 
 def dailyDeparture():
     try:
-        with open('packages.json', 'r') as packages_database:
-            with open('vehicles.json', 'r') as vehicles_database:
+        with open('database/packages.json', 'r') as packages_database:
+            with open('database/vehicles.json', 'r') as vehicles_database:
                 packages_db = json.loads(packages_database.read())
                 vehicles_db = json.loads(vehicles_database.read())
                 packages_to_depart = []
@@ -161,10 +161,10 @@ def dailyDeparture():
                     vehicles_db[vehicle.id]["weight"] = vehicle.setOfPackages.totalWeight()
                     vehicles_db[vehicle.id]["route-length"] = round(vehicle.setOfPackages.routeLength() / 1000, 1)
 
-        with open('packages.json', 'w') as packages_database_w:
+        with open('database/packages.json', 'w') as packages_database_w:
             json.dump(packages_db, packages_database_w)
 
-        with open('vehicles.json', 'w') as vehicles_database_w:
+        with open('database/vehicles.json', 'w') as vehicles_database_w:
             json.dump(vehicles_db, vehicles_database_w)
 
         return packages_db
@@ -191,8 +191,8 @@ def form_vehicles():
 @app.route('/')
 def index():
     try:
-        with open('packages.json', 'r') as f:
-            with open('vehicles.json', 'r') as f2:
+        with open('database/packages.json', 'r') as f:
+            with open('database/vehicles.json', 'r') as f2:
                 orders = json.loads(f.read())
                 vehicles = json.loads(f2.read())
                 return render_template("index.html", orders=orders, vehicles=vehicles)
@@ -204,10 +204,10 @@ def index():
 def menu(id):
     try:
         if request.method == 'DELETE':
-            with open('packages.json', 'r') as f:
+            with open('database/packages.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id and (id in entries.keys()):
-                    with open('packages.json', 'w') as f2:
+                    with open('database/packages.json', 'w') as f2:
                         response = entries[id]
                         entries.pop(id)
                         json.dump(entries, f2)
@@ -216,10 +216,10 @@ def menu(id):
                     return "error"
 
         if request.method == 'PUT':
-            with open('packages.json', 'r') as f:
+            with open('database/packages.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id and (id in entries.keys()):
-                    with open('packages.json', 'w') as f2:
+                    with open('database/packages.json', 'w') as f2:
                         new_entry = {
                             id: request.form
                         }
@@ -231,7 +231,7 @@ def menu(id):
                     return "error"
 
         if request.method == 'GET':
-            with open('packages.json', 'r') as f:
+            with open('database/packages.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id in entries.keys():
                     return entries[id]
@@ -245,7 +245,7 @@ def menu(id):
 def package_info(id):
     try:
         if request.method == 'GET':
-            with open('packages.json', 'r') as f:
+            with open('database/packages.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id in entries.keys():
                     return render_template("package_info.html", package=entries[id])
@@ -258,9 +258,9 @@ def package_info(id):
 def user():
     try:
         if request.method == 'POST':
-            with open('packages.json', 'r') as f:
+            with open('database/packages.json', 'r') as f:
                 entries = json.loads(f.read())
-                with open('packages.json', 'w') as f2:
+                with open('database/packages.json', 'w') as f2:
                     if len(entries) == 0:
                         new_id = 1
                     else:
@@ -275,7 +275,7 @@ def user():
             return entry_data
 
         if request.method == 'GET':
-            with open('packages.json', 'r') as f:
+            with open('database/packages.json', 'r') as f:
                 entries = json.loads(f.read())
                 return entries
 
@@ -285,7 +285,7 @@ def user():
 @app.route('/vehicle_route_preview/<id>', methods=['GET'])
 def vehicle_route_preview(id):
     try:
-        with open('vehicles.json', 'r') as vehicles_database:
+        with open('database/vehicles.json', 'r') as vehicles_database:
             vehicles = json.loads(vehicles_database.read())
             return render_template("vehicle_route_preview.html", vehicle=vehicles[id])
 
@@ -296,10 +296,10 @@ def vehicle_route_preview(id):
 def menu_vehicles(id):
     try:
         if request.method == 'DELETE':
-            with open('vehicles.json', 'r') as f:
+            with open('database/vehicles.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id and (id in entries.keys()):
-                    with open('vehicles.json', 'w') as f2:
+                    with open('database/vehicles.json', 'w') as f2:
                         response = entries[id]
                         entries.pop(id)
                         json.dump(entries, f2)
@@ -308,10 +308,10 @@ def menu_vehicles(id):
                     return "error"
 
         if request.method == 'PUT':
-            with open('vehicles.json', 'r') as f:
+            with open('database/vehicles.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id and (id in entries.keys()):
-                    with open('vehicles.json', 'w') as f2:
+                    with open('database/vehicles.json', 'w') as f2:
                         new_entry = {
                             id: request.form
                         }
@@ -323,7 +323,7 @@ def menu_vehicles(id):
                     return "error"
 
         if request.method == 'GET':
-            with open('vehicles.json', 'r') as f:
+            with open('database/vehicles.json', 'r') as f:
                 entries = json.loads(f.read())
                 if id in entries.keys():
                     return entries[id]
@@ -337,9 +337,9 @@ def menu_vehicles(id):
 def user_vehicles():
     try:
         if request.method == 'POST':
-            with open('vehicles.json', 'r') as f:
+            with open('database/vehicles.json', 'r') as f:
                 entries = json.loads(f.read())
-                with open('vehicles.json', 'w') as f2:
+                with open('database/vehicles.json', 'w') as f2:
                     if len(entries) == 0:
                         new_id = 1
                     else:
@@ -356,7 +356,7 @@ def user_vehicles():
             return vehicle_data
 
         if request.method == 'GET':
-            with open('vehicles.json', 'r') as f:
+            with open('database/vehicles.json', 'r') as f:
                 entries = json.loads(f.read())
                 return entries
 
