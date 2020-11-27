@@ -8,14 +8,6 @@ import itertools
 app = Flask(__name__)
 
 
-# Adding/deleting/editing(moving) points on the map
-# Adding/editing data related to the points (like in your original forms)
-# Storing data about the pickup and delivery orders on the server (you may use just an in-memory storage for demo purposes)
-# Presenting overall data from the server on the map
-# Presenting detailed information of the order selected on the map
-# Matching addresses to locations and vice versa with geocoding and reverse geocoding services
-
-
 def distance(lat1, lon1, lat2, lon2):
     r = 6371000
     fi1 = lat1 * math.pi / 180
@@ -78,22 +70,12 @@ class SetOfPackages:
             if dist < optimalDistance:
                 optimalDistance = dist
                 optimalForNow = int(i)
-        print("permuts :")
-        print(type(permuts[optimalForNow]))
         self.packages = list(permuts[optimalForNow])
 
 
     def addPackage(self, package):
-        print("addPackage1")
-        print(package.lat)
-        print(len(self.packages))
-        print(type(self.packages))
-        print(self.packages)
         self.packages.append(package)
-        #self.packages[len(self.packages)] = package
-        print("addPackage2")
         self.optimizeOrder()
-        print("addPackage3")
 
 
 class Vehicle:
@@ -104,11 +86,8 @@ class Vehicle:
         self.setOfPackages = SetOfPackages()
 
     def possibleToLoad(self, package):
-        print("poss1")
         newSetOfPackages = copy.deepcopy(self.setOfPackages)
-        print("poss2")
         newSetOfPackages.addPackage(package)
-        print("poss3")
         return newSetOfPackages.totalWeight() < self.capacity and newSetOfPackages.routeLength() < self.maxRoute
 
     def load(self, package):
@@ -130,18 +109,11 @@ class Vehicle:
 
 
 def assignRoutes(packages, vehicles):
-    print("asingRoutes")
     for package in packages:
-        print("package" + package.id)
         for vehicle in vehicles:
-            print("veh" + vehicle.id)
-            print(package.loaded)
-            print(vehicle.possibleToLoad(package))
             if not package.loaded and vehicle.possibleToLoad(package):
-                print("loading")
                 package.markLoaded()
                 vehicle.load(package)
-    print("asign2")
 
 
 def parseLatLonString(latlon):
