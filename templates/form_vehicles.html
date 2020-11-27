@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add a vehicle</title>
+</head>
+<body>
+<form method="post" action="/vehicles/">
+    <label class="standardLabel" for="weight">Vehicle capacity</label><br>
+    <input name="capacity" id="weight" class="standardInput" pattern="(0*[1-9][0-9]*(\.[0-9]+)?)|(0+\.0*[1-9][0-9]*)" placeholder="1000" size="6"> kg <br>
+    <input type="submit" value="Add vehicle"/>
+</form>
+</body>
+</html>

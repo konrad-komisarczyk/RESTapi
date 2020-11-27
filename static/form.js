@@ -111,6 +111,10 @@ window.addEventListener("load", function(){
 		"deliveryMapConfirmed");
 	initMap(pickupMap, "mapPickup", pickupMarker, "pickupLocation",
 		"pickupMapConfirmed");
+
+
+	// document.getElementById("delZip").addEventListener("input",
+	// 	geocodeDelivery());
 });
 
 
