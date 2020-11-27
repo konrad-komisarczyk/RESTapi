@@ -78,7 +78,7 @@ h1 {
 }
 
 .mapInput {
-  /*visibility: hidden;*/
+  visibility: hidden;
 }
 
 [type="checkbox"]:not(:checked),

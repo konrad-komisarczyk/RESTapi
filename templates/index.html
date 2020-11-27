@@ -38,9 +38,9 @@
             <th class="order-delete">
                Delete order
             </th>
-            <th class="order-edit">
+{#            <th class="order-edit">
                Edit
-            </th>
+            </th>#}
             <th class="order-edit">
                 Status
             </th>
@@ -51,14 +51,14 @@
                 {{ key }}
             </td>
             <td class="order-info">
-                <a href="/{{ key }}" target="_blank">&#9432;</a>
+                <a href="/package_info/{{ key }}" target="_blank">&#9432;</a>
             </td>
             <td class="order-delete">
                 <a href="" onclick="sendDelete({{ key }});">X</a>
             </td>
-            <td class="order-edit">
+{#            <td class="order-edit">
                 <a href="/form?id={{ key }}">Edit</a>
-            </td>
+            </td>#}
             <td class="order-edit">
                 {{ orders[key]["status"] }}
             </td>
@@ -98,7 +98,7 @@
                 <a href="/vehicle_route_preview/{{ key }}" target="_blank">&#9432;</a>
             </td>
             <td>
-                {{ vehicles[key]["weight"] }} / {{ vehicles[key]["capacity"] }}
+                {{ vehicles[key]["weight"] }} / {{ vehicles[key]["capacity"] }} kg
             </td>
             <td>
                 {{ vehicles[key]["route-length"] }} / 200 km
@@ -117,12 +117,14 @@
     function sendDelete(key) {
         window.alert(key);
         var req = new XMLHttpRequest();
-        req.open("DELETE", "/" + key, false);
+        req.open("DELETE", "/packages/" + key, false);
         req.send();
     }
 
     function departure() {
-        window.alert("The day begins!");
+        window.alert("The working day begins..");
+        window.alert("couriers work hard to deliver their packages...");
+        window.alert("and working the day ends!");
         var req = new XMLHttpRequest();
         req.open("GET", "/departure/", false);
         req.send();
@@ -151,11 +153,11 @@
         var y2 = (((strs2[1].split(")"))[0]).split(" "))[1];
 
         var marker1 = L.marker([parseFloat(x1), parseFloat(y1)]);
-        marker1.on('click', function () {window.open("/{{ key }}", "_blank");});
+        marker1.on('click', function () {window.open("/packages/{{ key }}", "_blank");});
         marker1.addTo(mymap);
 
         var marker2 = L.marker([parseFloat(x2), parseFloat(y2)]);
-        marker2.on('click', function () {window.open("/{{ key }}", "_blank");});
+        marker2.on('click', function () {window.open("/package_info/{{ key }}", "_blank");});
         marker2.addTo(mymap);
 
         var latlngs = Array();

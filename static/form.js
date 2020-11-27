@@ -9,7 +9,6 @@ var pickupMarker;
 
 
 
-
 function initMap(mymap, mapId, marker, locationFieldId, confirmationFieldId) {
 	mymap = L.map(mapId).setView([52.230, 21.01], 12);
 
@@ -29,9 +28,11 @@ function initMap(mymap, mapId, marker, locationFieldId, confirmationFieldId) {
 			marker = L.marker(e.latlng);
 			marker.addTo(mymap);
 		}
+		var locationField = document.getElementById(locationFieldId);
 
 		document.getElementById(locationFieldId).value = e.latlng;
 		document.getElementById(confirmationFieldId).style.visibility = "visible";
+		locationField.dispatchEvent(new Event("change"));
 	}
 
 	mymap.on('click', onMapClick);
@@ -47,9 +48,6 @@ function initMap(mymap, mapId, marker, locationFieldId, confirmationFieldId) {
 			marker.addTo(mymap);
 		}
 		mymap.flyTo(new L.LatLng(x1, y1), 12);
-		//var latLon = L.latLng(x1, y1);
-		//var bounds = latLon.toBounds(500); // 500 = metres
-		//mymap.panTo(latLon).fitBounds(bounds);
 	});
 
 }
@@ -118,10 +116,43 @@ function geocodeDelivery() {
 		deliveryMarker, deliveryMap);
 }
 
+function geocodePickup() {
+	var address = document.getElementById("pickupAddress").value;
+	var city = document.getElementById("pickupCity").value;
+	var postal = document.getElementById("pickupZip").value;
 
-function reverseGeocode(locationFieldId) {
-	var latlon = document.getElementById(locationFieldId).value;
+	geocode(address, city, postal, "pickupLocation", "pickupMapConfirmed",
+		pickupMarker, pickupMap);
+}
 
+
+function reverseGeocode(addressField, cityField, postalField, locationFieldId) {
+	var strs1 = document.getElementById(locationFieldId).value.split(",");
+
+	var x1 = parseFloat((strs1[0].split("("))[1]);
+	var y1 = parseFloat((((strs1[1].split(")"))[0]).split(" "))[1]);
+	var geocodeService = L.esri.Geocoding.geocodeService();
+
+
+	geocodeService.reverse().latlng([x1, y1]).run(function (error, result) {
+      	if (error) {
+        	return;
+      	}
+      	console.log(result);
+      	document.getElementById(addressField).value = result.address.Address;
+      	document.getElementById(cityField).value = result.address.City;
+      	document.getElementById(postalField).value = result.address.Postal;
+	});
+
+}
+
+function reverseGeocodeDelivery() {
+	reverseGeocode('delAddress', 'delCity', 'delZip', "deliveryLocation");
+}
+
+
+function reverseGeocodePickup() {
+	reverseGeocode('pickupAddress', 'pickupCity', 'pickupZip', "pickupLocation");
 }
 
 
@@ -131,6 +162,13 @@ window.addEventListener("load", function(){
 		"deliveryMapConfirmed");
 	initMap(pickupMap, "mapPickup", pickupMarker, "pickupLocation",
 		"pickupMapConfirmed");
+	document.getElementById("deliveryLocation").addEventListener(
+		"change", reverseGeocodeDelivery
+	);
+
+	document.getElementById("pickupLocation").addEventListener(
+		"change", reverseGeocodePickup
+	);
 });
 
 

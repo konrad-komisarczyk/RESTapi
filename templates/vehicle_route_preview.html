@@ -57,6 +57,7 @@
 			}).addTo(mymap);
 
     var latlngs = Array();
+
     {% for point in vehicle["route"] %}
         lat = parseFloat({{ point["lat"] }});
         lng = parseFloat({{ point["lon"] }});
@@ -64,6 +65,7 @@
         marker1.addTo(mymap);
         latlngs.push(marker1.getLatLng());
     {% endfor %}
+
     var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
 
 </script>

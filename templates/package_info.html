@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Package Info</title>
+</head>
+<body>
+
+<b>Status: {{ package["status"] }}</b><br>
+<br>
+
+Nadawca: {{ package["fname"] }} {{ package["lname"] }} <br>
+<br>
+Waga paczki: {{ package["weight"] }} <br>
+<br>
+Adres odbioru: {{ package["ship-address"] }}, {{ package["ship-zip"] }}, {{ package["ship-city"] }}  <br>
+Współrzedne odbioru: {{ package["pickup-map"] }} <br>
+{##}
+<br>
+Współrzędne dostawy: {{ package["delivery-map"] }} <br>
+</body>
+</html>

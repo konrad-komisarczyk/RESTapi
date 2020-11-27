@@ -1,1 +1,1 @@
-{"1": {"capacity": "1000", "route": [], "route-length": 0.0, "weight": 0}}
+{"1": {"capacity": "500", "route": [], "route-length": 0.0, "weight": 0}, "2": {"capacity": "400", "route": [], "route-length": 0.0, "weight": 0}, "3": {"capacity": "1000", "route": [{"lat": 52.217993, "lon": 20.961914}, {"lat": 52.202557, "lon": 21.035042}, {"lat": 52.217993, "lon": 20.961914}], "route-length": 10.5, "weight": 500.0}}

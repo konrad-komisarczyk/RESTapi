@@ -269,6 +269,19 @@ def menu(id):
         return "error"
 
 
+@app.route('/package_info/<id>', methods=['GET'])
+def package_info(id):
+    try:
+        if request.method == 'GET':
+            with open('packages.json', 'r') as f:
+                entries = json.loads(f.read())
+                if id in entries.keys():
+                    return render_template("package_info.html", package=entries[id])
+                else:
+                    return "error"
+    except:
+        return "error loading database"
+
 @app.route('/packages/', methods=['POST', 'GET'])
 def user():
     try:
